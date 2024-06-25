@@ -1,3 +1,7 @@
+/**
+ *Submitted for verification at basescan.org on 2024-06-09
+*/
+
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
@@ -93,9 +97,9 @@ library SafeERC20 {
     }
 }
 
-contract SmartGarage is ReentrancyGuard {
+contract RealYorkEstate is ReentrancyGuard {
     using SafeERC20 for IERC20;
-    address private TokenAddress = 0x55d398326f99059fF775485246999027B3197955;
+    address private TokenAddress = 0x9dDdFFcB5f26AcDA02Bdcb4f6504DE8a244aCa8E;
     IERC20 public Token;
 
     uint256[] public REFERRAL_PERCENTS = [4, 3, 2, 1];
@@ -139,10 +143,10 @@ contract SmartGarage is ReentrancyGuard {
 
     constructor() {
         Token = IERC20(TokenAddress);
-        manager = 0x12Fbef4CF5134666D74877697D18Ea08C747D272;
-        adminWallet = 0xEF7d920B05D3f0b3a0151440a5b1D7a84F2E6f42;
-        marketingWallet = 0x12D19080f19aBd7Eeaf6A9371AEe2d1EE47170Be;
-        startDate = 1702922400;
+        manager = 0x2bDBba30e7B990Dc162cfEEFA942469FBB9f725a;
+        adminWallet = 0x2bDBba30e7B990Dc162cfEEFA942469FBB9f725a;
+        marketingWallet = 0x2bDBba30e7B990Dc162cfEEFA942469FBB9f725a;
+        startDate = 0;
     }
 
     function buyTools(address ref, uint256 amount) public noReentrant {
