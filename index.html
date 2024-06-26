@@ -13,26 +13,51 @@
   <body>
     <div id="root"></div>
     
+    <!-- Bottone per connettere MetaMask -->
+    <button id="connect-wallet-button">Connect Wallet</button>
+    
     <!-- Aggiungi il codice per connettere MetaMask -->
     <script>
-      window.addEventListener('load', async () => {
-          if (typeof window.ethereum !== 'undefined') {
-              console.log('MetaMask is installed!');
-              try {
-                  // Request account access if needed
-                  await window.ethereum.request({ method: 'eth_requestAccounts' });
-                  // We now have access to the user's accounts
-                  const provider = new ethers.providers.Web3Provider(window.ethereum);
-                  const signer = provider.getSigner();
-                  console.log("Account connected: ", await signer.getAddress());
-              } catch (error) {
-                  console.error("User denied account access");
-              }
-          } else {
-              console.log('MetaMask is not installed. Please install MetaMask and try again.');
+      async function connectWallet() {
+        if (typeof window.ethereum !== 'undefined') {
+          try {
+            // Request account access if needed
+            await window.ethereum.request({ method: 'eth_requestAccounts' });
+            // We now have access to the user's accounts
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const address = await signer.getAddress();
+            console.log("Account connected: ", address);
+            document.getElementById("connect-wallet-button").innerText = "Wallet Connected: " + address;
+            localStorage.setItem('walletAddress', address);  // Salva l'indirizzo del wallet nel localStorage
+          } catch (error) {
+            console.error("User denied account access");
           }
+        } else {
+          console.log('MetaMask is not installed. Please install MetaMask and try again.');
+        }
+      }
+
+      async function checkWalletConnection() {
+        if (typeof window.ethereum !== 'undefined') {
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const accounts = await provider.listAccounts();
+          if (accounts.length > 0) {
+            const address = accounts[0];
+            console.log("Account connected: ", address);
+            document.getElementById("connect-wallet-button").innerText = "Wallet Connected: " + address;
+          } else {
+            document.getElementById("connect-wallet-button").innerText = "Connect Wallet";
+          }
+        }
+      }
+
+      window.addEventListener('load', async () => {
+        await checkWalletConnection();
+        document.getElementById("connect-wallet-button").addEventListener('click', connectWallet);
       });
     </script>
   </body>
 </html>
+
 
