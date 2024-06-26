@@ -19,10 +19,12 @@
     <!-- Aggiungi il codice per connettere MetaMask -->
     <script>
       async function connectWallet() {
+        console.log('Connect wallet button clicked.');
         if (typeof window.ethereum !== 'undefined') {
           try {
             // Request account access if needed
             await window.ethereum.request({ method: 'eth_requestAccounts' });
+            console.log('Ethereum request completed.');
             // We now have access to the user's accounts
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner();
@@ -31,7 +33,7 @@
             document.getElementById("connect-wallet-button").innerText = "Wallet Connected: " + address;
             localStorage.setItem('walletAddress', address);  // Salva l'indirizzo del wallet nel localStorage
           } catch (error) {
-            console.error("User denied account access");
+            console.error("User denied account access", error);
           }
         } else {
           console.log('MetaMask is not installed. Please install MetaMask and try again.');
@@ -39,25 +41,31 @@
       }
 
       async function checkWalletConnection() {
+        console.log('Checking wallet connection.');
         if (typeof window.ethereum !== 'undefined') {
           const provider = new ethers.providers.Web3Provider(window.ethereum);
           const accounts = await provider.listAccounts();
           if (accounts.length > 0) {
             const address = accounts[0];
-            console.log("Account connected: ", address);
+            console.log("Account already connected: ", address);
             document.getElementById("connect-wallet-button").innerText = "Wallet Connected: " + address;
           } else {
+            console.log('No accounts connected.');
             document.getElementById("connect-wallet-button").innerText = "Connect Wallet";
           }
+        } else {
+          console.log('MetaMask is not installed.');
         }
       }
 
       window.addEventListener('load', async () => {
+        console.log('Page loaded.');
         await checkWalletConnection();
         document.getElementById("connect-wallet-button").addEventListener('click', connectWallet);
       });
     </script>
   </body>
 </html>
+
 
 
